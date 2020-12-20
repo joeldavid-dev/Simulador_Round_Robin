@@ -58,9 +58,9 @@ public class Datos {
         imp("Por favor, ingresar los procesos en orden de entrada.");
         for (int i = 1; i <= numProcesos; i++) {
             imp("Ingresa el tiempo de llegada del proceso " + i + " en [ms]: ");
-            horaLlegada = sc.nextInt() * 1000;
+            horaLlegada = sc.nextInt();
             imp("Ingresa el tiempo de servicio del proceso " + i + " en [ms]: ");
-            tiempoEjecucion = sc.nextInt() * 1000;
+            tiempoEjecucion = sc.nextInt();
             imp("Ingresa la prioridad del proceso " + i + ": ");
             prioridad = sc.nextInt();
 

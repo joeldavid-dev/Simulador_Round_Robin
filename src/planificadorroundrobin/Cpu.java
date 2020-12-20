@@ -2,6 +2,10 @@ package planificadorroundrobin;
 
 import static java.lang.Thread.sleep;
 
+/*
+ * Esta clase se encarga de ejecutar los procesos que le llegan en la cola
+ * de procesos listos, los encola de nuevo si necesesita mas tiempo del quantum.
+ */
 public class Cpu extends Thread {
 
     //Atributos
