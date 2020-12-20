@@ -1,6 +1,7 @@
 package planificadorroundrobin;
 
 public class Proceso {
+
     //ATRIBUTOS
     int id;         //Id del proceso (numérico)
     String nombre;  //Nombre del proceso (alfanumérico)
@@ -9,20 +10,20 @@ public class Proceso {
     int prioridad;  //Prioridad del proceso
     int tiempoLlegada;    //Tiempo de llegada del proceso
     private Proceso siguiente; //Apuntador hacia el siguiente Proceso
-    
+
     //Variables que ocupa cpu
     int tiempoFaltante;
     int tiempoTotal;
     boolean primeraIteracion;
     int tiempoEntrada;
-    
+
     //CONSTRUCTORES
-    Proceso(){
+    Proceso() {
         //NODOS INVOLUCRADOS
         siguiente = null;
     }
-    
-    Proceso(int id, String nombre, int tam, int tiempoLlegada, int tiempoServicio, int prioridad){
+
+    Proceso(int id, String nombre, int tam, int tiempoLlegada, int tiempoServicio, int prioridad) {
         //NODOS INVOLUCRADOS
         siguiente = null;
         //Inicializacion de atributos
@@ -37,13 +38,13 @@ public class Proceso {
         this.primeraIteracion = true;
         this.tiempoEntrada = 0;
     }
-    
+
     //MÉTODOS
-    public void setSiguiente(Proceso siguiente){
+    public void setSiguiente(Proceso siguiente) {
         this.siguiente = siguiente;
     }
-    
-    public Proceso getSiguiente(){
+
+    public Proceso getSiguiente() {
         return this.siguiente;
     }
 }

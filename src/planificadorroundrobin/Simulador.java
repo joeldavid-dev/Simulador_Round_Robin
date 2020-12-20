@@ -26,12 +26,12 @@ public class Simulador {
 
             llegadaP.start();
             cpu.start();
-            
+
             try {
                 cpu.join();
             } catch (InterruptedException ex) {
             }
-            
+
             colaProcesosTerminados.imprimirDatosFinales();
 
         } else {

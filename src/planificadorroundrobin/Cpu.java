@@ -41,8 +41,8 @@ public class Cpu extends Thread {
                         tiempoTranscurrido = procesoTemp.tiempoLlegada;
                         primeraIteracion = false;
                     }
-                    
-                    if (procesoTemp.primeraIteracion){
+
+                    if (procesoTemp.primeraIteracion) {
                         //Acciones cuando un proceso entra a CPU por primera vez
                         procesoTemp.tiempoEntrada = tiempoTranscurrido;
                         procesoTemp.primeraIteracion = false;
@@ -66,7 +66,7 @@ public class Cpu extends Thread {
                         procesoTemp.tiempoFaltante = 0;
                         procesoTemp.tiempoTotal = tiempoTranscurrido;
                         colaProcesosTerminados.insertar(procesoTemp);
-                        
+
                         imp("Proceso " + procesoTemp.nombre + " termino su ejecucion en el tiempo " + tiempoTranscurrido + " [ms]");
                     }
                 }
