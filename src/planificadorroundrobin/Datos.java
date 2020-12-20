@@ -13,7 +13,6 @@ public class Datos {
     int quantum;
     Cola colaProcesos;          //Objeto tipo Cola
     Proceso nodo;
-    Procesos procesos;
     Scanner sc = new Scanner(System.in);
     Random numRandom = new Random();
 
@@ -26,7 +25,7 @@ public class Datos {
         Al terminar, la cola ya tiene a los procesos listos.
      */
     public Datos() {
-        maxTamProceso = 500;       //Se define un tamaño de memoria máximo por default para un proceso
+        maxTamProceso = 50;        //Se define un tamaño de memoria máximo por default para un proceso
         memoriaRAM = 1024;         //Se define un tamaño de memoria RAM por default
         quantum = 4000;            //Se define un tiempo de quantum por default
         imp("Valor por default del tamanio maximo de memoria que tendra un proceso: " + maxTamProceso + "[k]");
@@ -43,7 +42,7 @@ public class Datos {
             quantum = sc.nextInt();
 
             imp("Valor nuevo del tamanio maximo de memoria que tendra un proceso: " + maxTamProceso + "[k]");
-            imp("Valor nuevo del tamanio de memoria RAM: " + memoriaRAM + "[k]\n");
+            imp("Valor nuevo del tamanio de memoria RAM: " + memoriaRAM + "[k]");
             imp("Valor nuevo del quantum: " + quantum + "[mseg]\n");
         }
 
@@ -59,16 +58,16 @@ public class Datos {
         imp("Por favor, ingresar los procesos en orden de entrada.");
         for (int i = 1; i <= numProcesos; i++) {
             imp("Ingresa el tiempo de llegada del proceso " + i + " en [ms]: ");
-            horaLlegada = sc.nextInt();
+            horaLlegada = sc.nextInt() * 1000;
             imp("Ingresa el tiempo de servicio del proceso " + i + " en [ms]: ");
-            tiempoEjecucion = sc.nextInt();
+            tiempoEjecucion = sc.nextInt() * 1000;
             imp("Ingresa la prioridad del proceso " + i + ": ");
             prioridad = sc.nextInt();
 
-            colaProcesos.insertar(new Proceso(i, "P" + i, numRandom.nextInt(maxTamProceso - 99) + 100, tiempoEjecucion, prioridad, horaLlegada));
+            colaProcesos.insertar(new Proceso(i, "P" + i, (int) (Math.random() * maxTamProceso) + 1, horaLlegada, tiempoEjecucion, prioridad));
         }
 
-        imp("Procesos que se cargaron al simulador:");
+        imp("Procesos que se cargaron en el simulador:");
         colaProcesos.imprimirColaCompleta();
     }
 

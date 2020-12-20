@@ -2,41 +2,87 @@ package planificadorroundrobin;
 
 import static java.lang.Thread.sleep;
 
-public class Cpu {
+public class Cpu extends Thread {
 
     //Atributos
     private final int quantum;
-    private final Cola colaProcesosListos;
+    private final AdminProcesosListos procesosListos;
+    private Proceso procesoTemp;
+    private int tiempoTranscurrido;
+    private boolean primeraIteracion;
+    private Cola colaProcesosTerminados;
 
     //Constructores
-    public Cpu(int quantum, Cola procesosListos) {
+    public Cpu(int quantum, AdminProcesosListos procesosListos, Cola colaProcesosTerminados) {
+        this.setName("CPU");
         this.quantum = quantum;
-        this.colaProcesosListos = procesosListos;
+        this.procesosListos = procesosListos;
+        this.tiempoTranscurrido = 0;
+        this.primeraIteracion = true;
+        this.colaProcesosTerminados = colaProcesosTerminados;
     }
 
     //Metodos
-    public Proceso ejecutar(Proceso proceso) {
+    @Override
+    public void run() {
+        while (true) {// Ciclo infinito, se corta hasta que la simulacion finaliza
+            procesoTemp = procesosListos.desencolarProcesoListo();
 
-        if (proceso.tiempoFaltante >= quantum) {
-            System.out.println("Proceso " + proceso.nombre + " entró en ejecucion, quantum: " + quantum);
-            try {
-                sleep(quantum);
-            } catch (InterruptedException ex) {
+            if (procesosListos.subieronTodos && procesoTemp == null) {
+                //Acciones cuando se han subido todos los procesos y ya no quedan mas en la lista de procesos listos
+                imp("Terminaron de ejecutarse TODOS los procesos");
+                break;
+            } else {
+                //Acciones cuando aun faltan procesos a ejecutar   
+                if (procesoTemp != null) {
+
+                    if (primeraIteracion) {
+                        //Acciones cuando se itera por primera vez
+                        tiempoTranscurrido = procesoTemp.tiempoLlegada;
+                        primeraIteracion = false;
+                    }
+                    
+                    if (procesoTemp.primeraIteracion){
+                        //Acciones cuando un proceso entra a CPU por primera vez
+                        procesoTemp.tiempoEntrada = tiempoTranscurrido;
+                        procesoTemp.primeraIteracion = false;
+                    }
+
+                    imp("Proceso " + procesoTemp.nombre + " subio a CPU en el tiempo " + tiempoTranscurrido + " [ms], tiempo faltante de ejecucion "
+                            + procesoTemp.tiempoFaltante + " [ms]");
+
+                    if (procesoTemp.tiempoFaltante > quantum) {
+                        //Caso en el que el proceso necesita mas tiempo en CPU que el quantum, por lo que tiene que repetir
+                        dormir(quantum);
+
+                        procesoTemp.tiempoFaltante -= quantum;// Se le resta el tiempo que ya se ejecutó
+                        imp("Proceso " + procesoTemp.nombre + " entra de nuevo a la cola de procesos listos en el tiempo " + tiempoTranscurrido + " [ms]");
+                        procesosListos.encolarProcesoListo(procesoTemp);
+
+                    } else {
+                        //Caso en el que el proceso necesita menos tiempo que el quantum, ya no necesita regresar
+                        dormir(procesoTemp.tiempoFaltante);
+
+                        procesoTemp.tiempoFaltante = 0;
+                        procesoTemp.tiempoTotal = tiempoTranscurrido;
+                        colaProcesosTerminados.insertar(procesoTemp);
+                        
+                        imp("Proceso " + procesoTemp.nombre + " termino su ejecucion en el tiempo " + tiempoTranscurrido + " [ms]");
+                    }
+                }
             }
-
-            proceso.tiempoFaltante = proceso.tiempoFaltante - quantum;
-
-        } else {
-            System.out.println("Proceso "+proceso.nombre+" entró en ejecucion, quantum: "+proceso.tiempoFaltante);
-            try {
-                sleep(proceso.tiempoFaltante);
-            } catch (InterruptedException ex) {
-            }
-
-            proceso.tiempoFaltante = 0;
-
         }
-        System.out.println("Fin del quantum");
-        return proceso;
+    }
+
+    private void dormir(int tiempo) {
+        try {
+            sleep(tiempo);
+            tiempoTranscurrido += tiempo;
+        } catch (InterruptedException ex) {
+        }
+    }
+
+    private void imp(String mensaje) {
+        System.out.println("\nCPU: " + mensaje);
     }
 }
