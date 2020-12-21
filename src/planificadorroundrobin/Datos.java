@@ -55,16 +55,25 @@ public class Datos {
         int tiempoEjecucion = 0;
         int prioridad = 0;
 
+        Proceso procesosDesordenados[] = new Proceso[numProcesos]; //Array de procesos que se ordenaran
+
         imp("Por favor, ingresar los procesos en orden de entrada.");
-        for (int i = 1; i <= numProcesos; i++) {
-            imp("Ingresa el tiempo de llegada del proceso " + i + " en [ms]: ");
+        int indiceNormal = 0;
+        for (int i = 0; i < numProcesos; i++) { //ciclo que solicita datos y guarda los procesos en procesosDesordenados
+            indiceNormal = i + 1;
+
+            imp("Ingresa el tiempo de llegada del proceso " + indiceNormal + " en [ms]: ");
             horaLlegada = sc.nextInt();
-            imp("Ingresa el tiempo de servicio del proceso " + i + " en [ms]: ");
+            imp("Ingresa el tiempo de servicio del proceso " + indiceNormal + " en [ms]: ");
             tiempoEjecucion = sc.nextInt();
-            imp("Ingresa la prioridad del proceso " + i + ": ");
+            imp("Ingresa la prioridad del proceso " + indiceNormal + ": ");
             prioridad = sc.nextInt();
 
-            colaProcesos.insertar(new Proceso(i, "P" + i, (int) (Math.random() * maxTamProceso) + 1, horaLlegada, tiempoEjecucion, prioridad));
+            procesosDesordenados[i] = new Proceso(indiceNormal, "P" + indiceNormal, (int) (Math.random() * maxTamProceso) + 1, horaLlegada, tiempoEjecucion, prioridad);
+        }
+
+        for (int i = 0; i < numProcesos; i++) { //ciclo que llena la colaProcesos con los procesos ordenados
+            colaProcesos.insertar(procesosDesordenados[i]);
         }
 
         imp("Procesos que se cargaron en el simulador:");
