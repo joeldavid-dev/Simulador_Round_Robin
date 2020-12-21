@@ -55,10 +55,9 @@ public class Datos {
         int horaLlegada = 0;
         int tiempoEjecucion = 0;
         int prioridad = 0;
-        procesosDesordenados = new Proceso[numProcesos];
-
-        imp("Por favor, ingresar los procesos en orden de entrada.");
         int indiceNormal = 0;
+        procesosDesordenados = new Proceso[numProcesos];//Arreglo temporal para ordenar los procesos por hora de llegada
+
         for (int i = 0; i < numProcesos; i++) { //ciclo que solicita datos y guarda los procesos en procesosDesordenados
             indiceNormal = i + 1;
 

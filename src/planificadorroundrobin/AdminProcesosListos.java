@@ -37,9 +37,10 @@ public class AdminProcesosListos extends Thread {
             dormir(procesoTemp.tiempoLlegada - tiempoTranscurrido); // duerme lo necesario para que el proceso se insete en su tiempo de llegada           
             tiempoTranscurrido = tiempoTranscurrido + (procesoTemp.tiempoLlegada - tiempoTranscurrido); // Actualiza el tiempo que ha transcurrido en total
 
-            imp("Llega el proceso " + procesoTemp.nombre + " en el tiempo " + procesoTemp.tiempoLlegada + " [ms]");
-
             encolarProcesoListo(procesoTemp);
+            
+            imp("Llega el proceso " + procesoTemp.nombre + " en el tiempo " + procesoTemp.tiempoLlegada + " [ms], tamanio "
+                    + procesoTemp.tam + " [k]");
         }
         subieronTodos = true;
     }
@@ -63,6 +64,8 @@ public class AdminProcesosListos extends Thread {
         //Entra aqui cuando otro hilo ha dejado de ocupar este metodo
         disponible = false;//Cierra el cerrojo para que otro hilo no ocupe el metodo
         colaProcesosListos.insertar(procesoListo);
+        memoriaRAM = memoriaRAM - procesoListo.tam;
+        imp("Memoria RAM disponible " + memoriaRAM + "[k]");
         colaProcesosListos.imprimirColaCompleta();
         disponible = true;//Abre el cerrojo cuando termina
         notifyAll();
@@ -79,6 +82,12 @@ public class AdminProcesosListos extends Thread {
         //Entra aqui cuando otro hilo ha dejado de ocupar este metodo
         disponible = false;//Cierra el cerrojo para que otro hilo no ocupe el metodo
         procesoTempCerrojo = colaProcesosListos.desencolar();
+
+        if (procesoTempCerrojo != null) {
+            memoriaRAM = memoriaRAM - procesoTempCerrojo.tam;
+            imp("Memoria RAM disponible " + memoriaRAM + "[k]");
+        }
+
         disponible = true;//Abre el cerrojo cuando termina
         notifyAll();
         return procesoTempCerrojo;
