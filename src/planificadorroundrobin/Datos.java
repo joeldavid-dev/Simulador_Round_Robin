@@ -1,6 +1,5 @@
 package planificadorroundrobin;
 
-import java.util.Random;
 import java.util.Scanner;
 
 //Clase que recopila todos los datos necesarios y genera la cola de procesos
@@ -11,10 +10,10 @@ public class Datos {
     int maxTamProceso; //Tamaño máximo de memoria que puede tener un proceso: Entero en kBytes
     int memoriaRAM; //Tamaño de la memoria RAM: Entero en kBytes
     int quantum;
-    Cola colaProcesos; //Objeto tipo Cola
+    Cola colaProcesos;
     Proceso nodo;
-    Scanner sc = new Scanner(System.in);
-    Random numRandom = new Random();
+    private final Scanner sc;
+    private final Proceso procesosDesordenados[];
 
     //CONSTRUCTOR
     /*
@@ -28,6 +27,8 @@ public class Datos {
         maxTamProceso = 50; //Se define un tamaño de memoria máximo por default para un proceso
         memoriaRAM = 1024; //Se define un tamaño de memoria RAM por default
         quantum = 4000; //Se define un tiempo de quantum por default
+        sc = new Scanner(System.in);
+
         imp("Valor por default del tamanio maximo de memoria que tendra un proceso: " + maxTamProceso + "[k]");
         imp("Valor por default del tamanio de memoria RAM: " + memoriaRAM + "[k]");
         imp("Valor por default del quantum: " + quantum + "[mseg]");
@@ -54,8 +55,7 @@ public class Datos {
         int horaLlegada = 0;
         int tiempoEjecucion = 0;
         int prioridad = 0;
-
-        Proceso procesosDesordenados[] = new Proceso[numProcesos]; //Array de procesos que se ordenaran
+        procesosDesordenados = new Proceso[numProcesos];
 
         imp("Por favor, ingresar los procesos en orden de entrada.");
         int indiceNormal = 0;
@@ -72,6 +72,8 @@ public class Datos {
             procesosDesordenados[i] = new Proceso(indiceNormal, "P" + indiceNormal, (int) (Math.random() * maxTamProceso) + 1, horaLlegada, tiempoEjecucion, prioridad);
         }
 
+        ordenarProcesos();
+
         for (int i = 0; i < numProcesos; i++) { //ciclo que llena la colaProcesos con los procesos ordenados
             colaProcesos.insertar(procesosDesordenados[i]);
         }
@@ -80,7 +82,20 @@ public class Datos {
         colaProcesos.imprimirColaCompleta();
     }
 
-    //METODOS    
+    //METODOS
+    private void ordenarProcesos() {
+        //Algoritmo de ordenamiento bubble sort
+        for (int x = 0; x < procesosDesordenados.length; x++) {
+            for (int i = 0; i < procesosDesordenados.length - x - 1; i++) {
+                if (procesosDesordenados[i].tiempoLlegada > procesosDesordenados[i + 1].tiempoLlegada) {
+                    Proceso tmp = procesosDesordenados[i + 1];
+                    procesosDesordenados[i + 1] = procesosDesordenados[i];
+                    procesosDesordenados[i] = tmp;
+                }
+            }
+        }
+    }
+
     private void imp(String mensaje) {
         System.out.println(mensaje);
     }
