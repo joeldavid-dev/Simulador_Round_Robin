@@ -14,15 +14,17 @@ public class AdminProcesosListos extends Thread {
     private int tiempoTranscurrido;
     private boolean disponible;
     boolean subieronTodos;
+    private int memoriaRAM;
 
     //Constructores
-    public AdminProcesosListos(Cola procesosCargados, Cola procesosListos) {
+    public AdminProcesosListos(Cola procesosCargados, Cola procesosListos, int RAM) {
         this.setName("HiloAdminProcesosListos");
         this.colaProcesosCargados = procesosCargados;
         this.colaProcesosListos = procesosListos;
         this.tiempoTranscurrido = 0;
         this.disponible = true;
         this.subieronTodos = false;
+        this.memoriaRAM = RAM;
     }
 
     //Metodos
@@ -52,30 +54,32 @@ public class AdminProcesosListos extends Thread {
 
     public synchronized void encolarProcesoListo(Proceso procesoListo) {
         while (disponible == false) {
-            //el ultimo mensaje no ha sido mostrado
+            //Se mantiene en este while cuando otro hilo está ocupando este metodo.
             try {
                 wait(); //se pone a dormir y cede el monitor
             } catch (InterruptedException e) {
             }
         }
-        disponible = false;
+        //Entra aqui cuando otro hilo ha dejado de ocupar este metodo
+        disponible = false;//Cierra el cerrojo para que otro hilo no ocupe el metodo
         colaProcesosListos.insertar(procesoListo);
         colaProcesosListos.imprimirColaCompleta();
-        disponible = true;
+        disponible = true;//Abre el cerrojo cuando termina
         notifyAll();
     }
 
     public synchronized Proceso desencolarProcesoListo() {
         while (disponible == false) {
-            //no hay mensaje
+            //Se mantiene en este while cuando otro hilo está ocupando este metodo.
             try {
                 wait(); //se pone a dormir y cede el monitor
             } catch (InterruptedException e) {
             }
         }
-        disponible = false;
+        //Entra aqui cuando otro hilo ha dejado de ocupar este metodo
+        disponible = false;//Cierra el cerrojo para que otro hilo no ocupe el metodo
         procesoTempCerrojo = colaProcesosListos.desencolar();
-        disponible = true;
+        disponible = true;//Abre el cerrojo cuando termina
         notifyAll();
         return procesoTempCerrojo;
     }

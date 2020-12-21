@@ -3,12 +3,12 @@ package planificadorroundrobin;
 public class Proceso {
 
     //ATRIBUTOS
-    int id;         //Id del proceso (numérico)
-    String nombre;  //Nombre del proceso (alfanumérico)
-    int tam;        //Tamaño del proceso
-    int tiempoServicio;    //Tiempo que requiere el proceso para su ejecución
-    int prioridad;  //Prioridad del proceso
-    int tiempoLlegada;    //Tiempo de llegada del proceso
+    int id; //Id del proceso (numérico)
+    String nombre; //Nombre del proceso (alfanumérico)
+    int tam; //Tamaño del proceso
+    int tiempoServicio; //Tiempo que requiere el proceso para su ejecución
+    int prioridad; //Prioridad del proceso
+    int tiempoLlegada; //Tiempo de llegada del proceso
     private Proceso siguiente; //Apuntador hacia el siguiente Proceso
 
     //Variables que ocupa cpu

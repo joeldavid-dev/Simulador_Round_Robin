@@ -3,29 +3,24 @@ package planificadorroundrobin;
 public class Cola {
 
     //ATRIBUTOS
-    int memoriaRAM;     //Indicará el tamaño de la memoria RAM
-    private int cantidad;       //Cantidad de nodos en la cola
+    private int cantidad; //Cantidad de nodos en la cola
     static int idSegundo = 0;
-    private Proceso nodoTemporal;      //Comodín para métodos utilizados en esta clase
-    private Proceso nodoInicial;
-    private Proceso nodoImpresion;
+    private Proceso nodoTemporal; //nodoTemporal apuntará al ultimo nodo agregado
+    private Proceso nodoInicial; //Apunta siempre al primer nodo de la cola, se actualiza siempre que se desencole algo
+    private Proceso nodoImpresion; //Este nodo solo se usa en las impresiones, para evitar corrupciones
     private String miNombre;
 
     //CONSTRUCTORES
-    //Cola de procesos listos (Planificador a mediano plazo)
     public Cola(String nombre) {
         this.miNombre = nombre;
-        this.memoriaRAM = 0;
-        this.nodoTemporal = new Proceso();      //Se inicializa con nodo siguiente, head y tail en null (constructor en clase Proceso)
+        this.nodoTemporal = new Proceso(); //Se inicializa con nodo siguiente igual a null
         this.nodoInicial = this.nodoTemporal;
         this.nodoImpresion = new Proceso();
         this.cantidad = 0;
     }
 
     //MÉTODOS
-    /*
-        Método para insertar un nodo nuevo a la cola.
-     */
+    //Metodo para insertar un nodo a la cola
     public void insertar(Proceso nodo) {
 
         if (cantidad == 0) {
@@ -66,19 +61,19 @@ public class Cola {
             imp("\t| Nombre | ID | Prioridad | Tamanio (k) | Tiempo ejecucion (mseg) | Tiempo llegada (mseg)|");
 
             for (int i = 0; i < cantidad; i++) {
-                if (i == 0) {                                          //Si el nodo es head de la cola
+                if (i == 0) { //Si el nodo es head de la cola
                     imp("\t|   " + nodoImpresion.nombre + "   | " + nodoImpresion.id + "  |     " + nodoImpresion.prioridad
                             + "     |      " + nodoImpresion.tam + "     |          " + nodoImpresion.tiempoServicio + "           |         "
                             + nodoImpresion.tiempoLlegada + "         |\t<--- Head");
-                } else if (i == cantidad - 1) {                                                //Si el nodo es tail de la cola
+                } else if (i == cantidad - 1) { //Si el nodo es tail de la cola
                     imp("\t|   " + nodoImpresion.nombre + "   | " + nodoImpresion.id + "  |     " + nodoImpresion.prioridad
                             + "     |      " + nodoImpresion.tam + "     |          " + nodoImpresion.tiempoServicio + "           |         "
                             + nodoImpresion.tiempoLlegada + "         |\t<--- Tail");
-                    break; //Si no corta la ejecucion, el nodo temporal sera null y causará errores
-                } else {
+
+                } else { //Nodos entre head y tail
                     imp("\t|   " + nodoImpresion.nombre + "   | " + nodoImpresion.id + "  |     " + nodoImpresion.prioridad
                             + "     |      " + nodoImpresion.tam + "     |          " + nodoImpresion.tiempoServicio + "           |         "
-                            + nodoImpresion.tiempoLlegada + "         |");              //Nodos entre head y tail
+                            + nodoImpresion.tiempoLlegada + "         |");
                 }
 
                 nodoImpresion = nodoImpresion.getSiguiente();

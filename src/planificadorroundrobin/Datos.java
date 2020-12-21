@@ -3,15 +3,15 @@ package planificadorroundrobin;
 import java.util.Random;
 import java.util.Scanner;
 
-//Clase que genera la cola de procesos listos
+//Clase que recopila todos los datos necesarios y genera la cola de procesos
 public class Datos {
 
     //ATRIBUTOS
-    int numProcesos;    //Total de procesos
-    int maxTamProceso;  //Tamaño máximo de memoria que puede tener un proceso: Entero en kBytes
-    int memoriaRAM;     //Tamaño de la memoria RAM: Entero en kBytes
+    int numProcesos; //Total de procesos
+    int maxTamProceso; //Tamaño máximo de memoria que puede tener un proceso: Entero en kBytes
+    int memoriaRAM; //Tamaño de la memoria RAM: Entero en kBytes
     int quantum;
-    Cola colaProcesos;          //Objeto tipo Cola
+    Cola colaProcesos; //Objeto tipo Cola
     Proceso nodo;
     Scanner sc = new Scanner(System.in);
     Random numRandom = new Random();
@@ -25,9 +25,9 @@ public class Datos {
         Al terminar, la cola ya tiene a los procesos listos.
      */
     public Datos() {
-        maxTamProceso = 50;        //Se define un tamaño de memoria máximo por default para un proceso
-        memoriaRAM = 1024;         //Se define un tamaño de memoria RAM por default
-        quantum = 4000;            //Se define un tiempo de quantum por default
+        maxTamProceso = 50; //Se define un tamaño de memoria máximo por default para un proceso
+        memoriaRAM = 1024; //Se define un tamaño de memoria RAM por default
+        quantum = 4000; //Se define un tiempo de quantum por default
         imp("Valor por default del tamanio maximo de memoria que tendra un proceso: " + maxTamProceso + "[k]");
         imp("Valor por default del tamanio de memoria RAM: " + memoriaRAM + "[k]");
         imp("Valor por default del quantum: " + quantum + "[mseg]");

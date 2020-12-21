@@ -13,7 +13,7 @@ public class Simulador {
     public Simulador(Datos datos) {
         this.datos = datos;
         this.colaProcesosListos = new Cola("Cola de procesos listos"); //Instancia e inicializa la cola de procesos listos
-        this.llegadaP = new AdminProcesosListos(datos.colaProcesos, colaProcesosListos);
+        this.llegadaP = new AdminProcesosListos(datos.colaProcesos, colaProcesosListos, datos.memoriaRAM);
         this.colaProcesosTerminados = new Cola("Cola de procesos terminados");
         this.cpu = new Cpu(datos.quantum, llegadaP, colaProcesosTerminados);
     }
@@ -33,6 +33,7 @@ public class Simulador {
             }
 
             colaProcesosTerminados.imprimirDatosFinales();
+            imp("Simulacion terminada.");
 
         } else {
             imp("No hay procesos que hacer.");
