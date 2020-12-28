@@ -50,6 +50,8 @@ public class Cpu extends Thread {
                         //Acciones cuando un proceso entra a CPU por primera vez
                         procesoTemp.tiempoEntrada = tiempoTranscurrido;
                         procesoTemp.primeraIteracion = false;
+                        procesosListos.memoriaRAM = procesosListos.memoriaRAM - procesoTemp.tam;
+                        imp("Se cargó el proceso " + procesoTemp.nombre + " en memoria RAM. Memoria RAM disponible " + procesosListos.memoriaRAM + "[k]");
                     }
 
                     imp("Proceso " + procesoTemp.nombre + " subio a CPU en el tiempo " + tiempoTranscurrido + " [ms], tiempo faltante de ejecucion "
@@ -72,6 +74,13 @@ public class Cpu extends Thread {
                         colaProcesosTerminados.insertar(procesoTemp);
 
                         imp("Proceso " + procesoTemp.nombre + " termino su ejecucion en el tiempo " + tiempoTranscurrido + " [ms]");
+                        procesosListos.memoriaRAM = procesosListos.memoriaRAM + procesoTemp.tam;
+                        imp("Se liberó memoria RAM. Memoria RAM disponible " + procesosListos.memoriaRAM + "[k]");
+
+                        if (procesosListos.hayProcesoEsperandoRAM) {
+                            procesosListos.ramLista = true;
+                            procesosListos.esperarRAM();
+                        }
                     }
                 }
             }
